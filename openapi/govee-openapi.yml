@@ -1,0 +1,406 @@
+openapi: 3.1.0
+info:
+  title: Govee Developer API
+  version: '1.0'
+  description: >-
+    The Govee Developer API is a free, cloud REST API for controlling and
+    querying Govee smart lighting and smart-home devices. All requests are made
+    over HTTPS to https://openapi.api.govee.com/router/api/v1 and authenticated
+    with a Govee-API-Key header (the key is issued in the Govee Home App). The
+    API is capability-based: GET /user/devices returns each device's typed
+    capability list, POST /device/state queries live state, and POST
+    /device/control sends a single typed capability command. Dynamic (light)
+    scenes and user-authored DIY scenes are enumerated with POST /device/scenes
+    and POST /device/diy-scenes, then applied through the control endpoint.
+
+    Endpoints in this document are grounded in the public Govee Developer API v1
+    reference (developer.govee.com). Request and response schemas are modeled
+    from the documented capability structure; exact per-capability value shapes
+    vary by device and should be read from GET /user/devices.
+  contact:
+    name: Govee Developer Platform
+    url: https://developer.govee.com/
+  license:
+    name: Govee Developer API Terms
+    url: https://developer.govee.com/
+servers:
+- url: https://openapi.api.govee.com/router/api/v1
+  description: Govee Developer API v1 (cloud, production)
+security:
+- GoveeApiKey: []
+tags:
+- name: Devices
+  description: Enumerate account devices and their capabilities.
+- name: Device State
+  description: Query the live state of a device.
+- name: Device Control
+  description: Send capability commands to a device.
+- name: Scenes
+  description: Dynamic light scenes and DIY scenes.
+paths:
+  /user/devices:
+    get:
+      operationId: getDevices
+      summary: Get devices
+      description: >-
+        Returns all supported devices in the account, each with its sku
+        (product model), device id, user-assigned deviceName, and the typed
+        capability list describing what the device can do.
+      tags:
+      - Devices
+      responses:
+        '200':
+          description: Devices retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /device/state:
+    post:
+      operationId: getDeviceState
+      summary: Get device state
+      description: >-
+        Returns the current state and property values of a device identified by
+        sku and device id. Offline devices return their last known state.
+        Event-only capabilities cannot be queried.
+      tags:
+      - Device State
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceStateRequest'
+      responses:
+        '200':
+          description: Device state retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceStateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /device/control:
+    post:
+      operationId: controlDevice
+      summary: Control device
+      description: >-
+        Sends a single typed capability command to a device - for example
+        on_off/powerSwitch to turn power on or off, range/brightness to set
+        brightness, color_setting/colorRgb or colorTemperatureK to set color,
+        dynamic_scene or diy_scene to apply a scene, or
+        segment_color_setting/segmentedColorRgb and segmentedBrightness to
+        address individual RGBIC segments.
+      tags:
+      - Device Control
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceControlRequest'
+      responses:
+        '200':
+          description: Command accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+        '400':
+          description: Invalid capability, instance, or value for this device.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /device/scenes:
+    post:
+      operationId: getDeviceScenes
+      summary: Get dynamic light scenes
+      description: >-
+        Returns the dynamic (light) scenes supported by a device - Govee's
+        built-in lighting effects. Each scene is returned as a selectable option
+        that can be applied through POST /device/control using the dynamic_scene
+        capability.
+      tags:
+      - Scenes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceStateRequest'
+      responses:
+        '200':
+          description: Dynamic scenes retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /device/diy-scenes:
+    post:
+      operationId: getDeviceDiyScenes
+      summary: Get DIY scenes
+      description: >-
+        Returns the user-created DIY scenes supported by a device - custom
+        lighting effects authored in the Govee Home App. Each is returned as a
+        selectable option applied through POST /device/control using the
+        diy_scene capability.
+      tags:
+      - Scenes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceStateRequest'
+      responses:
+        '200':
+          description: DIY scenes retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  securitySchemes:
+    GoveeApiKey:
+      type: apiKey
+      in: header
+      name: Govee-API-Key
+      description: API key issued in the Govee Home App (Profile > About Us > Apply for API Key).
+  responses:
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    RateLimited:
+      description: >-
+        Rate limit exceeded. The account-wide limit is 10,000 requests per day;
+        a per-device per-minute limit also applies. Inspect the API-RateLimit-*
+        response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+  schemas:
+    Capability:
+      type: object
+      description: A typed device capability with its instance and parameter schema.
+      properties:
+        type:
+          type: string
+          description: Capability category, e.g. devices.capabilities.on_off.
+          examples:
+          - devices.capabilities.on_off
+          - devices.capabilities.range
+          - devices.capabilities.color_setting
+          - devices.capabilities.segment_color_setting
+          - devices.capabilities.dynamic_scene
+        instance:
+          type: string
+          description: Specific capability instance, e.g. powerSwitch, brightness, colorRgb.
+          examples:
+          - powerSwitch
+          - brightness
+          - colorRgb
+          - colorTemperatureK
+          - segmentedColorRgb
+        parameters:
+          type: object
+          description: Parameter schema for the capability (dataType plus options, range, or fields).
+          additionalProperties: true
+    Device:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Product model.
+          examples:
+          - H6199
+          - H7143
+        device:
+          type: string
+          description: Unique device id (MAC-style identifier).
+        deviceName:
+          type: string
+          description: User-assigned name from the Govee Home App.
+        type:
+          type: string
+          description: Device type, e.g. devices.types.light.
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capability'
+    DeviceListResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          examples:
+          - 200
+        message:
+          type: string
+          examples:
+          - success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    DeviceRef:
+      type: object
+      required:
+      - sku
+      - device
+      properties:
+        sku:
+          type: string
+          examples:
+          - H7143
+        device:
+          type: string
+          examples:
+          - 52:8B:D4:AD:FC:45:5D:FE
+    DeviceStateRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
+    DeviceStateResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+        payload:
+          type: object
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capabilities:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  instance:
+                    type: string
+                  state:
+                    type: object
+                    additionalProperties: true
+    ControlCapability:
+      type: object
+      required:
+      - type
+      - instance
+      - value
+      properties:
+        type:
+          type: string
+          examples:
+          - devices.capabilities.on_off
+        instance:
+          type: string
+          examples:
+          - powerSwitch
+        value:
+          description: >-
+            Control value; its shape depends on the capability. Integer for
+            on_off (0/1) and range/brightness, integer 0-16777215 for colorRgb,
+            Kelvin integer for colorTemperatureK, or an object for
+            segment_color_setting and work_mode.
+          oneOf:
+          - type: integer
+          - type: string
+          - type: object
+            additionalProperties: true
+    DeviceControlRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          type: object
+          required:
+          - sku
+          - device
+          - capability
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capability:
+              $ref: '#/components/schemas/ControlCapability'
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+    ScenesResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+        payload:
+          type: object
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capabilities:
+              type: array
+              description: >-
+                A single dynamic_scene (or diy_scene) capability whose parameters
+                enumerate the available scene options for this device.
+              items:
+                $ref: '#/components/schemas/Capability'

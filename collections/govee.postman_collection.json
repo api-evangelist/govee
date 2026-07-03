@@ -1,0 +1,209 @@
+{
+  "info": {
+    "name": "Govee Developer API",
+    "description": "Free cloud REST API for controlling and querying Govee smart lighting and smart-home devices. Base URL https://openapi.api.govee.com/router/api/v1, authenticated with a Govee-API-Key header.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.api.govee.com/router/api/v1"
+    },
+    {
+      "key": "apiKey",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "Govee-API-Key" },
+      { "key": "value", "value": "{{apiKey}}" },
+      { "key": "in", "value": "header" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Devices",
+      "item": [
+        {
+          "name": "Get Devices",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/devices",
+              "host": ["{{baseUrl}}"],
+              "path": ["user", "devices"]
+            },
+            "description": "Enumerate all supported devices in the account and their capabilities."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Device State",
+      "item": [
+        {
+          "name": "Get Device State",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H7143\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/state",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "state"]
+            },
+            "description": "Query the live state of a device by sku and device id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Device Control",
+      "item": [
+        {
+          "name": "Control Device - Power",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.on_off\",\n      \"instance\": \"powerSwitch\",\n      \"value\": 1\n    }\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/control",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "control"]
+            },
+            "description": "Turn a device on (value 1) or off (value 0)."
+          }
+        },
+        {
+          "name": "Control Device - Brightness",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.range\",\n      \"instance\": \"brightness\",\n      \"value\": 50\n    }\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/control",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "control"]
+            },
+            "description": "Set brightness within the device's documented range."
+          }
+        },
+        {
+          "name": "Control Device - Color (RGB)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.color_setting\",\n      \"instance\": \"colorRgb\",\n      \"value\": 16711680\n    }\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/control",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "control"]
+            },
+            "description": "Set an RGB color as an integer 0-16777215 (16711680 = red)."
+          }
+        },
+        {
+          "name": "Control Device - Segment Color",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.segment_color_setting\",\n      \"instance\": \"segmentedColorRgb\",\n      \"value\": {\n        \"segment\": [0, 1, 2],\n        \"rgb\": 16711680\n      }\n    }\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/control",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "control"]
+            },
+            "description": "Set the color of individual RGBIC segments by index array."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenes",
+      "item": [
+        {
+          "name": "Get Dynamic Scenes",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/scenes",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "scenes"]
+            },
+            "description": "Retrieve the dynamic (light) scenes a device supports."
+          }
+        },
+        {
+          "name": "Get DIY Scenes",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Govee-API-Key", "value": "{{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\"\n  }\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/device/diy-scenes",
+              "host": ["{{baseUrl}}"],
+              "path": ["device", "diy-scenes"]
+            },
+            "description": "Retrieve the user-created DIY scenes a device supports."
+          }
+        }
+      ]
+    }
+  ]
+}

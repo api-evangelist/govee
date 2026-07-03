@@ -1,0 +1,93 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Govee
+providerId: govee
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Smart Home
+- Smart Lighting
+- IoT
+- Device Control
+- Plans
+description: >-
+  The Govee Developer API is free. Any Govee Home App user can apply for a
+  personal API key (Profile > About Us > Apply for API Key) and use the cloud
+  REST API at no charge to enumerate their devices, query state, and send control
+  commands. There are no paid API tiers, per-call charges, or subscription
+  required for the developer API - the only cost to a consumer is buying Govee
+  hardware. Usage is instead governed by rate limits (10,000 requests per account
+  per day, plus a per-device per-minute limit). The local LAN API is likewise free
+  and requires no key. Govee has not published a commercial/enterprise API plan.
+notes: >-
+  Free-with-key model. There is no billing surface on the developer API, so the
+  plan below is a single free tier bounded by rate limits rather than price.
+  Verify current terms on the Govee Developer Platform during reconciliation.
+sources:
+- https://developer.govee.com/
+- https://developer.govee.com/docs/getting-started
+- https://developer.govee.com/reference/get-you-devices
+plans:
+- id: govee-developer-free
+  name: Govee Developer API (Free)
+  type: free
+  description: >-
+    Free cloud REST API access for any Govee account holder with an API key.
+    Covers device discovery, state queries, control commands, and dynamic/DIY
+    scene enumeration. Bounded by rate limits rather than a price.
+  entries:
+  - label: Account Request Allowance
+    name: account_requests
+    type: usage
+    metric: requests
+    limit: 10000
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  - label: Per-Device Command Rate
+    name: per_device_rate
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: minute
+    geo: global
+    unit: 1
+    price: free (per-device per-minute limit applies)
+    userMultiplied: false
+  elements:
+  - name: Get Devices and Capabilities
+  - name: Get Device State
+  - name: Control Device
+  - name: Dynamic Light Scenes
+  - name: DIY Scenes
+  - name: Segment Color and Brightness Control
+  - name: Device Event Subscription (MQTT)
+- id: govee-lan-api
+  name: Govee LAN API (Local)
+  type: free
+  description: >-
+    Free local-network control transport over UDP. No API key or cloud account
+    call is required; the client discovers and commands devices directly on the
+    LAN. Must be enabled per device in the Govee Home App and is supported only on
+    LAN-capable models.
+  entries:
+  - label: Local Control
+    name: lan_control
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: minute
+    geo: local-network
+    unit: 1
+    price: free (no key, no cloud rate limit)
+    userMultiplied: false
+  elements:
+  - name: UDP Discovery (multicast 239.255.255.250:4001)
+  - name: Local Device Control (UDP :4003)
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

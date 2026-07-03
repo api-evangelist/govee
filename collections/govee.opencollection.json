@@ -1,0 +1,166 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Govee Developer API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Govee-API-Key",
+      "value": "{{apiKey}}",
+      "in": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get devices and capabilities.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.api.govee.com/router/api/v1/user/devices"
+          },
+          "docs": "Enumerate all supported devices in the account and their typed capability lists."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Device State",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the live state of a device.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/state",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H7143\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\"\n  }\n}"
+            }
+          },
+          "docs": "Query the current state and property values of a device by sku and device id."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Device Control",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Turn a device on or off.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/control",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.on_off\",\n      \"instance\": \"powerSwitch\",\n      \"value\": 1\n    }\n  }\n}"
+            }
+          },
+          "docs": "Send an on_off/powerSwitch command (value 1 on, 0 off)."
+        },
+        {
+          "info": {
+            "name": "Set device brightness.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/control",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.range\",\n      \"instance\": \"brightness\",\n      \"value\": 50\n    }\n  }\n}"
+            }
+          },
+          "docs": "Send a range/brightness command within the device's documented range."
+        },
+        {
+          "info": {
+            "name": "Set device RGB color.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/control",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.color_setting\",\n      \"instance\": \"colorRgb\",\n      \"value\": 16711680\n    }\n  }\n}"
+            }
+          },
+          "docs": "Send a color_setting/colorRgb command as an integer 0-16777215."
+        },
+        {
+          "info": {
+            "name": "Set per-segment color on RGBIC lights.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/control",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.segment_color_setting\",\n      \"instance\": \"segmentedColorRgb\",\n      \"value\": { \"segment\": [0, 1, 2], \"rgb\": 16711680 }\n    }\n  }\n}"
+            }
+          },
+          "docs": "Send a segment_color_setting/segmentedColorRgb command targeting a segment index array."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Scenes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get dynamic light scenes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/scenes",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\"\n  }\n}"
+            }
+          },
+          "docs": "Retrieve the dynamic (light) scenes a device supports."
+        },
+        {
+          "info": {
+            "name": "Get DIY scenes.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/diy-scenes",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"requestId\": \"uuid\",\n  \"payload\": {\n    \"sku\": \"H6199\",\n    \"device\": \"52:8B:D4:AD:FC:45:5D:FE\"\n  }\n}"
+            }
+          },
+          "docs": "Retrieve the user-created DIY scenes a device supports."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

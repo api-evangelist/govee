@@ -1,0 +1,69 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Govee
+providerId: govee
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Smart Home
+- Smart Lighting
+- IoT
+- Device Control
+- Rate Limiting
+- Quotas
+description: >-
+  The Govee Developer API enforces an account-wide limit of 10,000 requests per
+  API key per day (rolling 24 hours). In addition, a per-device per-minute limit
+  applies to control and query calls so that a single device is not flooded with
+  commands (community-observed at roughly 10 requests per device per minute).
+  Rate-limit state is exposed on responses via API-RateLimit-Limit,
+  API-RateLimit-Remaining, and API-RateLimit-Reset headers, and exceeding a limit
+  returns HTTP 429. The local LAN API is not subject to the cloud rate limits.
+notes: >-
+  The 10,000/account/day cap is documented by Govee. The exact per-device
+  per-minute number is not stated as a single canonical figure in the reference
+  and is reported by integrators (~10/min); treat it as approximate and honor the
+  API-RateLimit-* headers as the source of truth.
+sources:
+- https://developer.govee.com/reference/get-you-devices
+- https://developer.govee.com/reference/get-devices-status
+- https://developer.govee.com/docs/getting-started
+responseCodes:
+  throttled: 429
+limits:
+- name: Account Daily Requests
+  scope: account
+  metric: requests
+  limit: 10000 per day
+  notes: Per API key, rolling 24 hours. Exceeding returns HTTP 429.
+- name: Per-Device Request Rate
+  scope: device
+  metric: requests
+  limit: per-device per-minute (approx 10/min, integrator-reported)
+  notes: Protects individual devices from command flooding on control and state calls.
+- name: LAN API
+  scope: local-network
+  metric: requests
+  limit: not cloud-limited
+  notes: Local UDP control bypasses the cloud rate limits entirely.
+headers:
+- name: API-RateLimit-Limit
+  description: Ceiling of requests allowed in the current window.
+- name: API-RateLimit-Remaining
+  description: Requests remaining in the current window.
+- name: API-RateLimit-Reset
+  description: When the current window resets.
+policies:
+- name: Backoff on 429
+  description: On HTTP 429, stop sending and retry with exponential backoff, guided by the API-RateLimit-Reset header.
+- name: Prefer State Caching
+  description: Cache device state and avoid polling tighter than needed; the daily cap is shared across all calls on the key.
+- name: Use LAN for High Frequency
+  description: For rapid or high-frequency control (e.g. animations), use the local LAN API, which is not bounded by the cloud limits.
+- name: Event Subscription over Polling
+  description: For capabilities that emit events, subscribe over MQTT (topic GA/{apiKey}) instead of polling /device/state to conserve the daily quota.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

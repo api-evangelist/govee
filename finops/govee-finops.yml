@@ -1,0 +1,83 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Govee
+providerId: govee
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Smart Home
+- Smart Lighting
+- IoT
+- Device Control
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Govee Developer API spend. The API itself carries no usage
+  charge - there is no metered billing, no subscription, and no per-call fee for
+  the cloud REST API or the local LAN API. The only monetary cost associated with
+  the platform is the purchase of Govee hardware (one-time capital cost of the
+  devices being controlled). Consequently, "cost management" for the Govee API is
+  really quota management: staying within the 10,000 requests/account/day limit
+  and the per-device per-minute limit, since there is no way to pay to raise them.
+  Optimization is therefore about call efficiency (caching state, subscribing to
+  MQTT events, using the LAN API for high-frequency control) rather than dollar
+  spend.
+notes: >-
+  No invoice is issued for API usage, so FOCUS billing columns are effectively
+  zero-cost. The dominant (and only) real cost is hardware acquisition. Meters
+  below track request consumption against the free daily quota, not currency.
+sources:
+- https://developer.govee.com/
+- https://developer.govee.com/docs/getting-started
+- https://developer.govee.com/reference/get-you-devices
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Govee
+serviceCategory: IoT and Smart Home
+billingModel:
+  pricingCategory: Free
+  billingFrequency: None
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+meters:
+- name: account_requests
+  description: Cloud REST API requests counted against the 10,000 per-account-per-day quota (no charge, quota only).
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - endpoint
+- name: per_device_requests
+  description: Requests per device per minute, bounded by the per-device rate limit (no charge, quota only).
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - device
+- name: hardware_capital
+  description: One-time purchase cost of Govee devices - the only real monetary cost tied to the platform.
+  unit: devices
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track daily request consumption per API key against the 10,000/day quota and watch API-RateLimit-* headers.
+- name: Allocation
+  description: Attribute request volume to specific devices and integrations so quota pressure maps to the workload causing it.
+- name: Optimization
+  description: Cache device state, subscribe to MQTT device events instead of polling, and use the local LAN API for high-frequency control to conserve the daily quota.
+- name: Accountability
+  description: Since quota cannot be purchased up, owners must design integrations to live within the free limits rather than budget for overage.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,118 @@
+aid: govee
+name: Govee
+review:
+  question: Does Govee expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-03'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Govee's public developer surface is a
+    request/response REST API over HTTPS (base
+    https://openapi.api.govee.com/router/api/v1). Govee does offer a real-time
+    device-event channel, but it is delivered over MQTT (mqtts://
+    mqtt.openapi.govee.com:8883, topic GA/{apiKey}), not WebSocket. A separate
+    local LAN API provides direct control over UDP on the local network. Neither
+    transport is a WebSocket, and neither was modeled as AsyncAPI here.
+findings:
+  summary: |
+    Govee does not publish a documented public WebSocket API. The Govee Developer
+    API (v1) is a cloud REST API served over HTTPS at
+    https://openapi.api.govee.com/router/api/v1 and authenticated with a
+    Govee-API-Key header (the key is issued in the Govee Home App). It exposes a
+    small, capability-based surface: GET /user/devices lists a user's devices and
+    their typed capabilities; POST /device/state returns live device state; POST
+    /device/control sends a single typed capability command (power, brightness,
+    RGB/color-temperature, dynamic scene, DIY scene, per-segment color and
+    brightness); and POST /device/scenes and POST /device/diy-scenes enumerate a
+    device's dynamic and DIY scenes. Real-time device events (for capabilities
+    that support devices.capabilities.event) are delivered over MQTT over TLS
+    (mqtts://mqtt.openapi.govee.com:8883, topic GA/{apiKey}), which is not a
+    WebSocket. Govee additionally documents a local LAN API for direct on-network
+    control over UDP. No realtime, bidirectional WebSocket (ws:// or wss://)
+    endpoint is documented on Govee's public developer API.
+  openSource: |
+    Govee's platform is proprietary; the developer API, firmware, and Govee Home
+    App are closed source. There is an official Govee-API GitHub organization
+    (github.com/Govee-API) publishing samples and reference material, and a large
+    community ecosystem (Home Assistant integrations, govee2mqtt, node-red flows)
+    built on top of both the cloud REST API and the LAN API, but the platform
+    itself is not open source.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://openapi.api.govee.com/router/api/v1
+      documented: true
+      note: Govee Developer API v1. Govee-API-Key header auth. Devices, state, control, scenes, DIY scenes.
+    - protocol: MQTT
+      scheme: mqtts
+      baseURL: mqtts://mqtt.openapi.govee.com:8883
+      documented: true
+      note: Device event subscription over MQTT over TLS, topic GA/{apiKey}, username and password both the API key. Not WebSocket.
+    - protocol: LAN (UDP)
+      scheme: udp
+      documented: true
+      note: Local network control. Multicast discovery to 239.255.255.250:4001, device replies on :4002, commands sent to device :4003. A separate local transport, no cloud key required, must be enabled per device in the Govee Home App.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Govee's developer API reference as of the review date. The real-time channel is MQTT, not WebSocket.
+  endpointsConfirmedRest:
+    - GET  https://openapi.api.govee.com/router/api/v1/user/devices
+    - POST https://openapi.api.govee.com/router/api/v1/device/state
+    - POST https://openapi.api.govee.com/router/api/v1/device/control
+    - POST https://openapi.api.govee.com/router/api/v1/device/scenes
+    - POST https://openapi.api.govee.com/router/api/v1/device/diy-scenes
+  endpointsModeled:
+    - note: >-
+        Per-segment color and brightness control is not a distinct endpoint - it
+        is the segment_color_setting capability (segmentedColorRgb /
+        segmentedBrightness) sent through POST /device/control. It is modeled as a
+        separate logical API in apis.yml for discoverability but shares the
+        confirmed /device/control endpoint.
+    - note: >-
+        Device event subscription is transport-only (MQTT); there is no REST
+        endpoint to enable it. Events flow for capabilities whose type is
+        devices.capabilities.event once subscribed to topic GA/{apiKey}.
+  notes: |
+    A legacy Govee API v1 (base https://developer-api.govee.com, PUT
+    /v1/devices/control, GET /v1/devices, GET /v1/devices/state) still appears in
+    older integrations. The current, actively documented platform is the
+    capability-based API at https://openapi.api.govee.com/router/api/v1, which is
+    what this catalog documents.
+sources:
+  - url: https://developer.govee.com/
+    type: Documentation
+    note: Govee Development Platform home; links getting-started, reference, and llms.txt.
+  - url: https://developer.govee.com/docs/getting-started
+    type: Documentation
+    note: Introduction; API key applied for in the Govee Home App; Govee-API-Key header.
+  - url: https://developer.govee.com/reference/get-you-devices
+    type: APIReference
+    note: GET /router/api/v1/user/devices; returns sku, device, deviceName, capabilities; 10000/account/day, 429 on limit.
+  - url: https://developer.govee.com/reference/get-devices-status
+    type: APIReference
+    note: POST /router/api/v1/device/state; live/historical device state; event capabilities cannot be queried.
+  - url: https://developer.govee.com/reference/control-you-devices
+    type: APIReference
+    note: POST /router/api/v1/device/control; typed capability commands including segment_color_setting and work_mode.
+  - url: https://developer.govee.com/reference/get-light-scene
+    type: APIReference
+    note: POST /router/api/v1/device/scenes (dynamic) and POST /router/api/v1/device/diy-scenes (DIY).
+  - url: https://developer.govee.com/reference/subscribe-device-event
+    type: APIReference
+    note: Device events over MQTT over TLS, host mqtts://mqtt.openapi.govee.com:8883, topic GA/{apiKey}. Not WebSocket.
+  - url: https://app-h5.govee.com/user-manual/wlan-guide
+    type: Documentation
+    note: LAN API guide - local UDP control (multicast 239.255.255.250:4001 discovery, :4002 reply, :4003 command).
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists, so the review answer is false and no
+    WebSocket AsyncAPI was created. Govee's real-time device-event channel is
+    MQTT (a distinct protocol with its own bindings), and the LAN API is local
+    UDP; both are documented in the transports and sources above so they are
+    never misrepresented as WebSocket. The cloud REST API is captured in
+    openapi/govee-openapi.yml and mirrored in the Postman and Open Collection
+    files.
