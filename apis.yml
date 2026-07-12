@@ -162,6 +162,10 @@ apis:
     color (segmentedColorRgb) or per-segment brightness (segmentedBrightness) by
     passing the target segment index array plus the color or brightness value.
 common:
+- type: DomainSecurity
+  url: security/govee-domain-security.yml
+- type: Authentication
+  url: authentication/govee-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/Govee-API
 - type: LinkedIn

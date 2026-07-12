@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/govee-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: GoveeApiKey
+  type: apiKey
+  in: header
+  parameter: Govee-API-Key
+  description: API key issued in the Govee Home App (Profile > About Us > Apply for API Key).
+  sources:
+  - openapi/govee-openapi.yml
