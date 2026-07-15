@@ -162,6 +162,8 @@ apis:
     color (segmentedColorRgb) or per-segment brightness (segmentedBrightness) by
     passing the target segment index array plus the color or brightness value.
 common:
+- type: AgenticAccess
+  url: agentic-access/govee-agentic-access.yml
 - type: DomainSecurity
   url: security/govee-domain-security.yml
 - type: Authentication
