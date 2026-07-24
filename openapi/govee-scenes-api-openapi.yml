@@ -1,0 +1,179 @@
+openapi: 3.1.0
+info:
+  title: Govee Developer Device Control Scenes API
+  version: '1.0'
+  description: 'The Govee Developer API is a free, cloud REST API for controlling and querying Govee smart lighting and smart-home devices. All requests are made over HTTPS to https://openapi.api.govee.com/router/api/v1 and authenticated with a Govee-API-Key header (the key is issued in the Govee Home App). The API is capability-based: GET /user/devices returns each device''s typed capability list, POST /device/state queries live state, and POST /device/control sends a single typed capability command. Dynamic (light) scenes and user-authored DIY scenes are enumerated with POST /device/scenes and POST /device/diy-scenes, then applied through the control endpoint.
+
+    Endpoints in this document are grounded in the public Govee Developer API v1 reference (developer.govee.com). Request and response schemas are modeled from the documented capability structure; exact per-capability value shapes vary by device and should be read from GET /user/devices.'
+  contact:
+    name: Govee Developer Platform
+    url: https://developer.govee.com/
+  license:
+    name: Govee Developer API Terms
+    url: https://developer.govee.com/
+servers:
+- url: https://openapi.api.govee.com/router/api/v1
+  description: Govee Developer API v1 (cloud, production)
+security:
+- GoveeApiKey: []
+tags:
+- name: Scenes
+  description: Dynamic light scenes and DIY scenes.
+paths:
+  /device/scenes:
+    post:
+      operationId: getDeviceScenes
+      summary: Get dynamic light scenes
+      description: Returns the dynamic (light) scenes supported by a device - Govee's built-in lighting effects. Each scene is returned as a selectable option that can be applied through POST /device/control using the dynamic_scene capability.
+      tags:
+      - Scenes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceStateRequest'
+      responses:
+        '200':
+          description: Dynamic scenes retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /device/diy-scenes:
+    post:
+      operationId: getDeviceDiyScenes
+      summary: Get DIY scenes
+      description: Returns the user-created DIY scenes supported by a device - custom lighting effects authored in the Govee Home App. Each is returned as a selectable option applied through POST /device/control using the diy_scene capability.
+      tags:
+      - Scenes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceStateRequest'
+      responses:
+        '200':
+          description: DIY scenes retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenesResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  schemas:
+    ScenesResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+        payload:
+          type: object
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capabilities:
+              type: array
+              description: A single dynamic_scene (or diy_scene) capability whose parameters enumerate the available scene options for this device.
+              items:
+                $ref: '#/components/schemas/Capability'
+    Capability:
+      type: object
+      description: A typed device capability with its instance and parameter schema.
+      properties:
+        type:
+          type: string
+          description: Capability category, e.g. devices.capabilities.on_off.
+          examples:
+          - devices.capabilities.on_off
+          - devices.capabilities.range
+          - devices.capabilities.color_setting
+          - devices.capabilities.segment_color_setting
+          - devices.capabilities.dynamic_scene
+        instance:
+          type: string
+          description: Specific capability instance, e.g. powerSwitch, brightness, colorRgb.
+          examples:
+          - powerSwitch
+          - brightness
+          - colorRgb
+          - colorTemperatureK
+          - segmentedColorRgb
+        parameters:
+          type: object
+          description: Parameter schema for the capability (dataType plus options, range, or fields).
+          additionalProperties: true
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+    DeviceRef:
+      type: object
+      required:
+      - sku
+      - device
+      properties:
+        sku:
+          type: string
+          examples:
+          - H7143
+        device:
+          type: string
+          examples:
+          - 52:8B:D4:AD:FC:45:5D:FE
+    DeviceStateRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
+  responses:
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+  securitySchemes:
+    GoveeApiKey:
+      type: apiKey
+      in: header
+      name: Govee-API-Key
+      description: API key issued in the Govee Home App (Profile > About Us > Apply for API Key).

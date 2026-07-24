@@ -1,0 +1,137 @@
+openapi: 3.1.0
+info:
+  title: Govee Developer Device Control Devices API
+  version: '1.0'
+  description: 'The Govee Developer API is a free, cloud REST API for controlling and querying Govee smart lighting and smart-home devices. All requests are made over HTTPS to https://openapi.api.govee.com/router/api/v1 and authenticated with a Govee-API-Key header (the key is issued in the Govee Home App). The API is capability-based: GET /user/devices returns each device''s typed capability list, POST /device/state queries live state, and POST /device/control sends a single typed capability command. Dynamic (light) scenes and user-authored DIY scenes are enumerated with POST /device/scenes and POST /device/diy-scenes, then applied through the control endpoint.
+
+    Endpoints in this document are grounded in the public Govee Developer API v1 reference (developer.govee.com). Request and response schemas are modeled from the documented capability structure; exact per-capability value shapes vary by device and should be read from GET /user/devices.'
+  contact:
+    name: Govee Developer Platform
+    url: https://developer.govee.com/
+  license:
+    name: Govee Developer API Terms
+    url: https://developer.govee.com/
+servers:
+- url: https://openapi.api.govee.com/router/api/v1
+  description: Govee Developer API v1 (cloud, production)
+security:
+- GoveeApiKey: []
+tags:
+- name: Devices
+  description: Enumerate account devices and their capabilities.
+paths:
+  /user/devices:
+    get:
+      operationId: getDevices
+      summary: Get devices
+      description: Returns all supported devices in the account, each with its sku (product model), device id, user-assigned deviceName, and the typed capability list describing what the device can do.
+      tags:
+      - Devices
+      responses:
+        '200':
+          description: Devices retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  schemas:
+    Capability:
+      type: object
+      description: A typed device capability with its instance and parameter schema.
+      properties:
+        type:
+          type: string
+          description: Capability category, e.g. devices.capabilities.on_off.
+          examples:
+          - devices.capabilities.on_off
+          - devices.capabilities.range
+          - devices.capabilities.color_setting
+          - devices.capabilities.segment_color_setting
+          - devices.capabilities.dynamic_scene
+        instance:
+          type: string
+          description: Specific capability instance, e.g. powerSwitch, brightness, colorRgb.
+          examples:
+          - powerSwitch
+          - brightness
+          - colorRgb
+          - colorTemperatureK
+          - segmentedColorRgb
+        parameters:
+          type: object
+          description: Parameter schema for the capability (dataType plus options, range, or fields).
+          additionalProperties: true
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+    Device:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: Product model.
+          examples:
+          - H6199
+          - H7143
+        device:
+          type: string
+          description: Unique device id (MAC-style identifier).
+        deviceName:
+          type: string
+          description: User-assigned name from the Govee Home App.
+        type:
+          type: string
+          description: Device type, e.g. devices.types.light.
+        capabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capability'
+    DeviceListResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          examples:
+          - 200
+        message:
+          type: string
+          examples:
+          - success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+  responses:
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+  securitySchemes:
+    GoveeApiKey:
+      type: apiKey
+      in: header
+      name: Govee-API-Key
+      description: API key issued in the Govee Home App (Profile > About Us > Apply for API Key).

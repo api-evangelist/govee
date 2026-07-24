@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: Govee Developer Device Control Device State API
+  version: '1.0'
+  description: 'The Govee Developer API is a free, cloud REST API for controlling and querying Govee smart lighting and smart-home devices. All requests are made over HTTPS to https://openapi.api.govee.com/router/api/v1 and authenticated with a Govee-API-Key header (the key is issued in the Govee Home App). The API is capability-based: GET /user/devices returns each device''s typed capability list, POST /device/state queries live state, and POST /device/control sends a single typed capability command. Dynamic (light) scenes and user-authored DIY scenes are enumerated with POST /device/scenes and POST /device/diy-scenes, then applied through the control endpoint.
+
+    Endpoints in this document are grounded in the public Govee Developer API v1 reference (developer.govee.com). Request and response schemas are modeled from the documented capability structure; exact per-capability value shapes vary by device and should be read from GET /user/devices.'
+  contact:
+    name: Govee Developer Platform
+    url: https://developer.govee.com/
+  license:
+    name: Govee Developer API Terms
+    url: https://developer.govee.com/
+servers:
+- url: https://openapi.api.govee.com/router/api/v1
+  description: Govee Developer API v1 (cloud, production)
+security:
+- GoveeApiKey: []
+tags:
+- name: Device State
+  description: Query the live state of a device.
+paths:
+  /device/state:
+    post:
+      operationId: getDeviceState
+      summary: Get device state
+      description: Returns the current state and property values of a device identified by sku and device id. Offline devices return their last known state. Event-only capabilities cannot be queried.
+      tags:
+      - Device State
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceStateRequest'
+      responses:
+        '200':
+          description: Device state retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceStateResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  schemas:
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+    DeviceRef:
+      type: object
+      required:
+      - sku
+      - device
+      properties:
+        sku:
+          type: string
+          examples:
+          - H7143
+        device:
+          type: string
+          examples:
+          - 52:8B:D4:AD:FC:45:5D:FE
+    DeviceStateRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
+    DeviceStateResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+        payload:
+          type: object
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capabilities:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  instance:
+                    type: string
+                  state:
+                    type: object
+                    additionalProperties: true
+  responses:
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+  securitySchemes:
+    GoveeApiKey:
+      type: apiKey
+      in: header
+      name: Govee-API-Key
+      description: API key issued in the Govee Home App (Profile > About Us > Apply for API Key).
