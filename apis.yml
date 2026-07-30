@@ -12,7 +12,20 @@ description: Govee builds smart lighting and smart-home devices - RGBIC LED stri
   dynamic light scenes, DIY scenes, and per-segment color and brightness. Device
   events (for capabilities that support them) are delivered over MQTT, and a
   separate local LAN API allows direct UDP control on the local network.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/govee.png
 tags:
 - Smart Home
 - Smart Lighting
@@ -24,143 +37,102 @@ created: '2026-07-03'
 modified: '2026-07-03'
 specificationVersion: '0.19'
 apis:
-- aid: govee:govee-devices-api
-  name: Govee Devices API
-  tags:
-  - Devices
-  - Discovery
-  - Capabilities
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.govee.com/reference/get-you-devices
-  baseURL: https://openapi.api.govee.com/router/api/v1
-  properties:
-  - url: https://developer.govee.com/docs/getting-started
-    type: Documentation
-  - url: https://developer.govee.com/reference/get-you-devices
-    type: APIReference
-  - url: openapi/govee-openapi.yml
-    type: OpenAPI
-  - url: collections/govee.postman_collection.json
-    type: PostmanCollection
-  - url: collections/govee.opencollection.json
-    type: OpenCollection
-  description: Enumerate all supported devices in a Govee account and discover each
-    device's capabilities - the sku (product model), device id, user-assigned name,
-    and the typed capability list (on_off, range/brightness, color_setting,
-    segment_color_setting, dynamic scenes, and more) that tells you what commands a
-    device accepts.
-- aid: govee:govee-device-state-api
-  name: Govee Device State API
-  tags:
-  - Device State
-  - Query
-  - Status
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.govee.com/reference/get-devices-status
-  baseURL: https://openapi.api.govee.com/router/api/v1
-  properties:
-  - url: https://developer.govee.com/reference/get-devices-status
-    type: APIReference
-  - url: openapi/govee-openapi.yml
-    type: OpenAPI
-  - url: collections/govee.postman_collection.json
-    type: PostmanCollection
-  - url: collections/govee.opencollection.json
-    type: OpenCollection
-  description: Query the current state and property values of a specific device by
-    sku and device id - power, online status, brightness, color, color temperature,
-    and other capability states. Offline devices return their last known
-    (historical) state; event-only capabilities cannot be queried directly.
 - aid: govee:govee-device-control-api
   name: Govee Device Control API
+  description: Send capability commands to a device.
+  humanURL: https://developer.govee.com/reference/get-you-devices
+  baseURL: https://openapi.api.govee.com/router/api/v1
   tags:
   - Device Control
-  - Commands
-  - Power
-  - Color
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.govee.com/reference/control-you-devices
-  baseURL: https://openapi.api.govee.com/router/api/v1
   properties:
-  - url: https://developer.govee.com/reference/control-you-devices
-    type: APIReference
-  - url: openapi/govee-openapi.yml
-    type: OpenAPI
-  - url: collections/govee.postman_collection.json
-    type: PostmanCollection
-  - url: collections/govee.opencollection.json
-    type: OpenCollection
-  description: Send control commands to a device by passing a single typed capability
-    - turn power on/off (on_off/powerSwitch), set brightness (range), set an RGB
-    color or Kelvin color temperature (color_setting), toggle features
-    (nightlight, oscillation), select a mode, or drive work_mode and
-    temperature_setting capabilities on appliances.
-- aid: govee:govee-dynamic-scenes-api
-  name: Govee Dynamic Scenes API
+  - type: OpenAPI
+    url: openapi/govee-device-control-api-openapi.yml
+  - type: Documentation
+    url: https://developer.govee.com/docs/getting-started
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-you-devices
+  - type: PostmanCollection
+    url: collections/govee.postman_collection.json
+  - type: OpenCollection
+    url: collections/govee.opencollection.json
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-devices-status
+  - type: APIReference
+    url: https://developer.govee.com/reference/control-you-devices
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-light-scene
+- aid: govee:govee-device-state-api
+  name: Govee Device State API
+  description: Query the live state of a device.
+  humanURL: https://developer.govee.com/reference/get-you-devices
+  baseURL: https://openapi.api.govee.com/router/api/v1
+  tags:
+  - Device State
+  properties:
+  - type: OpenAPI
+    url: openapi/govee-device-state-api-openapi.yml
+  - type: Documentation
+    url: https://developer.govee.com/docs/getting-started
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-you-devices
+  - type: PostmanCollection
+    url: collections/govee.postman_collection.json
+  - type: OpenCollection
+    url: collections/govee.opencollection.json
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-devices-status
+  - type: APIReference
+    url: https://developer.govee.com/reference/control-you-devices
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-light-scene
+- aid: govee:govee-devices-api
+  name: Govee Devices API
+  description: Enumerate account devices and their capabilities.
+  humanURL: https://developer.govee.com/reference/get-you-devices
+  baseURL: https://openapi.api.govee.com/router/api/v1
+  tags:
+  - Devices
+  properties:
+  - type: OpenAPI
+    url: openapi/govee-devices-api-openapi.yml
+  - type: Documentation
+    url: https://developer.govee.com/docs/getting-started
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-you-devices
+  - type: PostmanCollection
+    url: collections/govee.postman_collection.json
+  - type: OpenCollection
+    url: collections/govee.opencollection.json
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-devices-status
+  - type: APIReference
+    url: https://developer.govee.com/reference/control-you-devices
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-light-scene
+- aid: govee:govee-scenes-api
+  name: Govee Scenes API
+  description: Dynamic light scenes and DIY scenes.
+  humanURL: https://developer.govee.com/reference/get-you-devices
+  baseURL: https://openapi.api.govee.com/router/api/v1
   tags:
   - Scenes
-  - Light Scenes
-  - Effects
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.govee.com/reference/get-light-scene
-  baseURL: https://openapi.api.govee.com/router/api/v1
   properties:
-  - url: https://developer.govee.com/reference/get-light-scene
-    type: APIReference
-  - url: openapi/govee-openapi.yml
-    type: OpenAPI
-  - url: collections/govee.postman_collection.json
-    type: PostmanCollection
-  - url: collections/govee.opencollection.json
-    type: OpenCollection
-  description: Retrieve the list of dynamic (light) scenes a device supports -
-    Govee's built-in lighting effects such as Sunrise, Aurora, or Rainbow - each
-    returned as a selectable option that can then be applied through the Device
-    Control API's dynamic_scene capability.
-- aid: govee:govee-diy-scenes-api
-  name: Govee DIY Scenes API
-  tags:
-  - DIY Scenes
-  - Custom Effects
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.govee.com/reference/control-you-devices
-  baseURL: https://openapi.api.govee.com/router/api/v1
-  properties:
-  - url: https://developer.govee.com/reference/control-you-devices
-    type: APIReference
-  - url: openapi/govee-openapi.yml
-    type: OpenAPI
-  - url: collections/govee.postman_collection.json
-    type: PostmanCollection
-  - url: collections/govee.opencollection.json
-    type: OpenCollection
-  description: Retrieve the user-created DIY scenes a device supports - custom
-    lighting effects authored by the user in the Govee Home App - each returned as
-    a selectable option that can then be applied through the Device Control API's
-    diy_scene capability.
-- aid: govee:govee-segment-control-api
-  name: Govee Segment Color and Brightness API
-  tags:
-  - Segment Control
-  - RGBIC
-  - Color
-  - Brightness
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://developer.govee.com/reference/control-you-devices
-  baseURL: https://openapi.api.govee.com/router/api/v1
-  properties:
-  - url: https://developer.govee.com/reference/control-you-devices
-    type: APIReference
-  - url: openapi/govee-openapi.yml
-    type: OpenAPI
-  - url: collections/govee.postman_collection.json
-    type: PostmanCollection
-  - url: collections/govee.opencollection.json
-    type: OpenCollection
-  description: Address individual segments of RGBIC lights independently via the
-    Device Control endpoint's segment_color_setting capability - set per-segment RGB
-    color (segmentedColorRgb) or per-segment brightness (segmentedBrightness) by
-    passing the target segment index array plus the color or brightness value.
+  - type: OpenAPI
+    url: openapi/govee-scenes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.govee.com/docs/getting-started
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-you-devices
+  - type: PostmanCollection
+    url: collections/govee.postman_collection.json
+  - type: OpenCollection
+    url: collections/govee.opencollection.json
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-devices-status
+  - type: APIReference
+    url: https://developer.govee.com/reference/control-you-devices
+  - type: APIReference
+    url: https://developer.govee.com/reference/get-light-scene
 common:
 - type: AgenticAccess
   url: agentic-access/govee-agentic-access.yml
