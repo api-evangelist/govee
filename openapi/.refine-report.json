@@ -1,0 +1,20 @@
+{
+  "provider": "govee",
+  "sources": [
+    "govee-device-control-api-openapi.yml",
+    "govee-device-state-api-openapi.yml",
+    "govee-devices-api-openapi.yml",
+    "govee-scenes-api-openapi.yml"
+  ],
+  "outputs": [
+    "govee-device-control-api-openapi.yml",
+    "govee-device-state-api-openapi.yml",
+    "govee-devices-api-openapi.yml",
+    "govee-scenes-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
