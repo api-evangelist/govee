@@ -35,7 +35,7 @@ tags:
 - Device Control
 created: '2026-07-03'
 modified: '2026-07-03'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: govee:govee-device-control-api
   name: Govee Device Control API
