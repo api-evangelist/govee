@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Govee Developer Device Control Device State API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Govee-API-Key",
+      "value": "{{Govee-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Device State",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get device state",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/state",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the current state and property values of a device identified by sku and device id. Offline devices return their last known state. Event-only capabilities cannot be queried."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

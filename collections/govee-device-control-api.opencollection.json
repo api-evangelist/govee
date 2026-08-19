@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Govee Developer Device Control API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Govee-API-Key",
+      "value": "{{Govee-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Device Control",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Control device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/control",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a single typed capability command to a device - for example on_off/powerSwitch to turn power on or off, range/brightness to set brightness, color_setting/colorRgb or colorTemperatureK to set color, dynamic_scene or diy_scene to apply a scene, or segment_color_setting/segmentedColorRgb and segmentedBrightness to address individual RGBIC segments."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

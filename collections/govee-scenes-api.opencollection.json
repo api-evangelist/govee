@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Govee Developer Device Control Scenes API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Govee-API-Key",
+      "value": "{{Govee-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scenes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get dynamic light scenes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/scenes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the dynamic (light) scenes supported by a device - Govee's built-in lighting effects. Each scene is returned as a selectable option that can be applied through POST /device/control using the dynamic_scene capability."
+        },
+        {
+          "info": {
+            "name": "Get DIY scenes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.api.govee.com/router/api/v1/device/diy-scenes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the user-created DIY scenes supported by a device - custom lighting effects authored in the Govee Home App. Each is returned as a selectable option applied through POST /device/control using the diy_scene capability."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

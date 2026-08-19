@@ -1,0 +1,302 @@
+{
+  "item": [
+    {
+      "id": "99504b05-7664-4747-bac5-e343f40d5408",
+      "name": "Device Control",
+      "description": {
+        "content": "Send capability commands to a device.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "375cc896-63d1-4a0f-8dba-45755014ee29",
+          "name": "Control device",
+          "request": {
+            "name": "Control device",
+            "description": {
+              "content": "Sends a single typed capability command to a device - for example on_off/powerSwitch to turn power on or off, range/brightness to set brightness, color_setting/colorRgb or colorTemperatureK to set color, dynamic_scene or diy_scene to apply a scene, or segment_color_setting/segmentedColorRgb and segmentedBrightness to address individual RGBIC segments.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "device",
+                "control"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payload\": {\n    \"sku\": \"<string>\",\n    \"device\": \"<string>\",\n    \"capability\": {\n      \"type\": \"<string>\",\n      \"instance\": \"<string>\",\n      \"value\": \"<integer>\"\n    }\n  },\n  \"requestId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d268afda-6b82-451a-a2f1-6002607eb70f",
+              "name": "Command accepted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "device",
+                    "control"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payload\": {\n    \"sku\": \"<string>\",\n    \"device\": \"<string>\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.on_off\",\n      \"instance\": \"powerSwitch\",\n      \"value\": 7684\n    }\n  },\n  \"requestId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"requestId\": \"string\",\n  \"code\": 200,\n  \"msg\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60aef9a6-fea8-4b6b-9a57-c90ac14c54d4",
+              "name": "Invalid capability, instance, or value for this device.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "device",
+                    "control"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payload\": {\n    \"sku\": \"<string>\",\n    \"device\": \"<string>\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.on_off\",\n      \"instance\": \"powerSwitch\",\n      \"value\": 7684\n    }\n  },\n  \"requestId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "db381495-3623-4b5f-9fa8-50f1abcab980",
+              "name": "Missing or invalid Govee-API-Key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "device",
+                    "control"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payload\": {\n    \"sku\": \"<string>\",\n    \"device\": \"<string>\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.on_off\",\n      \"instance\": \"powerSwitch\",\n      \"value\": 7684\n    }\n  },\n  \"requestId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"requestId\": \"string\",\n  \"code\": 200,\n  \"msg\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "041eef3d-dc87-4d6f-b849-923c382eca6e",
+              "name": "Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "device",
+                    "control"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"payload\": {\n    \"sku\": \"<string>\",\n    \"device\": \"<string>\",\n    \"capability\": {\n      \"type\": \"devices.capabilities.on_off\",\n      \"instance\": \"powerSwitch\",\n      \"value\": 7684\n    }\n  },\n  \"requestId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"requestId\": \"string\",\n  \"code\": 200,\n  \"msg\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.api.govee.com/router/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Govee-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "485db4b7-396c-4bf1-bfa3-162276f72e5f",
+    "name": "Govee Developer Device Control API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Govee Developer API is a free, cloud REST API for controlling and querying Govee smart lighting and smart-home devices. All requests are made over HTTPS to https://openapi.api.govee.com/router/api/v1 and authenticated with a Govee-API-Key header (the key is issued in the Govee Home App). The API is capability-based: GET /user/devices returns each device's typed capability list, POST /device/state queries live state, and POST /device/control sends a single typed capability command. Dynamic (light) scenes and user-authored DIY scenes are enumerated with POST /device/scenes and POST /device/diy-scenes, then applied through the control endpoint.\nEndpoints in this document are grounded in the public Govee Developer API v1 reference (developer.govee.com). Request and response schemas are modeled from the documented capability structure; exact per-capability value shapes vary by device and should be read from GET /user/devices.\n\nContact Support:\n Name: Govee Developer Platform",
+      "type": "text/plain"
+    }
+  }
+}

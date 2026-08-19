@@ -1,0 +1,217 @@
+{
+  "item": [
+    {
+      "id": "260dbf03-da8d-4bf7-9b5d-2c4a126b1961",
+      "name": "Devices",
+      "description": {
+        "content": "Enumerate account devices and their capabilities.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "482746ef-d285-4648-a428-57c5c22abec3",
+          "name": "Get devices",
+          "request": {
+            "name": "Get devices",
+            "description": {
+              "content": "Returns all supported devices in the account, each with its sku (product model), device id, user-assigned deviceName, and the typed capability list describing what the device can do.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "user",
+                "devices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "44a9b846-a084-421e-9c48-3d71e4003d48",
+              "name": "Devices retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "devices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 200,\n  \"message\": \"success\",\n  \"data\": [\n    {\n      \"sku\": \"H6199\",\n      \"device\": \"string\",\n      \"deviceName\": \"string\",\n      \"type\": \"string\",\n      \"capabilities\": [\n        {\n          \"type\": \"devices.capabilities.on_off\",\n          \"instance\": \"powerSwitch\",\n          \"parameters\": {\n            \"key_0\": 1568,\n            \"key_1\": \"string\",\n            \"key_2\": 8916\n          }\n        },\n        {\n          \"type\": \"devices.capabilities.on_off\",\n          \"instance\": \"powerSwitch\",\n          \"parameters\": {\n            \"key_0\": 8635.809093920156,\n            \"key_1\": 527.7482557178337,\n            \"key_2\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"sku\": \"H6199\",\n      \"device\": \"string\",\n      \"deviceName\": \"string\",\n      \"type\": \"string\",\n      \"capabilities\": [\n        {\n          \"type\": \"devices.capabilities.on_off\",\n          \"instance\": \"powerSwitch\",\n          \"parameters\": {\n            \"key_0\": 4745.8809686360755\n          }\n        },\n        {\n          \"type\": \"devices.capabilities.on_off\",\n          \"instance\": \"powerSwitch\",\n          \"parameters\": {\n            \"key_0\": \"string\",\n            \"key_1\": false\n          }\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79137f6f-6ac8-4359-8889-44155e8d36a1",
+              "name": "Missing or invalid Govee-API-Key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "devices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"requestId\": \"string\",\n  \"code\": 200,\n  \"msg\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67eb2e28-19fb-47e2-ab8e-69a94172b0a3",
+              "name": "Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "user",
+                    "devices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Govee-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"requestId\": \"string\",\n  \"code\": 200,\n  \"msg\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.api.govee.com/router/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Govee-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "59999a40-c454-4f80-ad76-64da628b27fd",
+    "name": "Govee Developer Device Control Devices API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Govee Developer API is a free, cloud REST API for controlling and querying Govee smart lighting and smart-home devices. All requests are made over HTTPS to https://openapi.api.govee.com/router/api/v1 and authenticated with a Govee-API-Key header (the key is issued in the Govee Home App). The API is capability-based: GET /user/devices returns each device's typed capability list, POST /device/state queries live state, and POST /device/control sends a single typed capability command. Dynamic (light) scenes and user-authored DIY scenes are enumerated with POST /device/scenes and POST /device/diy-scenes, then applied through the control endpoint.\nEndpoints in this document are grounded in the public Govee Developer API v1 reference (developer.govee.com). Request and response schemas are modeled from the documented capability structure; exact per-capability value shapes vary by device and should be read from GET /user/devices.\n\nContact Support:\n Name: Govee Developer Platform",
+      "type": "text/plain"
+    }
+  }
+}

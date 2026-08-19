@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Govee Developer Device Control Devices API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Govee-API-Key",
+      "value": "{{Govee-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Devices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get devices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.api.govee.com/router/api/v1/user/devices"
+          },
+          "docs": "Returns all supported devices in the account, each with its sku (product model), device id, user-assigned deviceName, and the typed capability list describing what the device can do."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
