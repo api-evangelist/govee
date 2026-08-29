@@ -12,6 +12,18 @@ description: Govee builds smart lighting and smart-home devices - RGBIC LED stri
   dynamic light scenes, DIY scenes, and per-segment color and brightness. Device
   events (for capabilities that support them) are delivered over MQTT, and a
   separate local LAN API allows direct UDP control on the local network.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: free
   onboarding: self-serve
