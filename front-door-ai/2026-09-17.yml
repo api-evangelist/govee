@@ -1,0 +1,26 @@
+# Front Door AI Index — govee — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: govee
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.govee.com
+  final_host: us.govee.com
+  ownership: own
+  owner: govee
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 6
+  host_score: 6
+  density: 3.04
+  words: 1972
+  tiers:
+    agentic: 0
+    core: 6
+    model: 0
+  ambiguous: 23
+  top_terms:
+    smart: 23
+    AI: 6
