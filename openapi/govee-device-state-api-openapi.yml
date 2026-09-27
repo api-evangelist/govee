@@ -44,6 +44,19 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
     DeviceStateResponse:
       type: object
       properties:
@@ -76,16 +89,6 @@ components:
                   state:
                     type: object
                     additionalProperties: true
-    DeviceStateRequest:
-      type: object
-      required:
-      - payload
-      properties:
-        requestId:
-          type: string
-          description: Client-generated correlation id (a UUID).
-        payload:
-          $ref: '#/components/schemas/DeviceRef'
     DeviceRef:
       type: object
       required:
@@ -100,19 +103,16 @@ components:
           type: string
           examples:
           - 52:8B:D4:AD:FC:45:5D:FE
-    CommandResponse:
+    DeviceStateRequest:
       type: object
+      required:
+      - payload
       properties:
         requestId:
           type: string
-        code:
-          type: integer
-          examples:
-          - 200
-        msg:
-          type: string
-          examples:
-          - success
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
   responses:
     Unauthorized:
       description: Missing or invalid Govee-API-Key.

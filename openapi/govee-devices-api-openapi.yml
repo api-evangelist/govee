@@ -60,6 +60,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Capability'
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+    DeviceListResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          examples:
+          - 200
+        message:
+          type: string
+          examples:
+          - success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
     Capability:
       type: object
       description: A typed device capability with its instance and parameter schema.
@@ -86,34 +114,6 @@ components:
           type: object
           description: Parameter schema for the capability (dataType plus options, range, or fields).
           additionalProperties: true
-    DeviceListResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          examples:
-          - 200
-        message:
-          type: string
-          examples:
-          - success
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Device'
-    CommandResponse:
-      type: object
-      properties:
-        requestId:
-          type: string
-        code:
-          type: integer
-          examples:
-          - 200
-        msg:
-          type: string
-          examples:
-          - success
   responses:
     Unauthorized:
       description: Missing or invalid Govee-API-Key.

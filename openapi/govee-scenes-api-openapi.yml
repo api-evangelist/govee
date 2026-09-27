@@ -68,7 +68,7 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    ScenesResponse:
+    CommandResponse:
       type: object
       properties:
         requestId:
@@ -81,28 +81,20 @@ components:
           type: string
           examples:
           - success
-        payload:
-          type: object
-          properties:
-            sku:
-              type: string
-            device:
-              type: string
-            capabilities:
-              type: array
-              description: A single dynamic_scene (or diy_scene) capability whose parameters enumerate the available scene options for this device.
-              items:
-                $ref: '#/components/schemas/Capability'
-    DeviceStateRequest:
+    DeviceRef:
       type: object
       required:
-      - payload
+      - sku
+      - device
       properties:
-        requestId:
+        sku:
           type: string
-          description: Client-generated correlation id (a UUID).
-        payload:
-          $ref: '#/components/schemas/DeviceRef'
+          examples:
+          - H7143
+        device:
+          type: string
+          examples:
+          - 52:8B:D4:AD:FC:45:5D:FE
     Capability:
       type: object
       description: A typed device capability with its instance and parameter schema.
@@ -129,21 +121,17 @@ components:
           type: object
           description: Parameter schema for the capability (dataType plus options, range, or fields).
           additionalProperties: true
-    DeviceRef:
+    DeviceStateRequest:
       type: object
       required:
-      - sku
-      - device
+      - payload
       properties:
-        sku:
+        requestId:
           type: string
-          examples:
-          - H7143
-        device:
-          type: string
-          examples:
-          - 52:8B:D4:AD:FC:45:5D:FE
-    CommandResponse:
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
+    ScenesResponse:
       type: object
       properties:
         requestId:
@@ -156,6 +144,18 @@ components:
           type: string
           examples:
           - success
+        payload:
+          type: object
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capabilities:
+              type: array
+              description: A single dynamic_scene (or diy_scene) capability whose parameters enumerate the available scene options for this device.
+              items:
+                $ref: '#/components/schemas/Capability'
   responses:
     Unauthorized:
       description: Missing or invalid Govee-API-Key.
