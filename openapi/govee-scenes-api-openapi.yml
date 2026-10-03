@@ -67,20 +67,20 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
   schemas:
-    CommandResponse:
-      type: object
-      properties:
-        requestId:
-          type: string
-        code:
-          type: integer
-          examples:
-          - 200
-        msg:
-          type: string
-          examples:
-          - success
     DeviceRef:
       type: object
       required:
@@ -95,6 +95,54 @@ components:
           type: string
           examples:
           - 52:8B:D4:AD:FC:45:5D:FE
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+    ScenesResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
+        payload:
+          type: object
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capabilities:
+              type: array
+              description: A single dynamic_scene (or diy_scene) capability whose parameters enumerate the available scene options for this device.
+              items:
+                $ref: '#/components/schemas/Capability'
+    DeviceStateRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
     Capability:
       type: object
       description: A typed device capability with its instance and parameter schema.
@@ -121,54 +169,6 @@ components:
           type: object
           description: Parameter schema for the capability (dataType plus options, range, or fields).
           additionalProperties: true
-    DeviceStateRequest:
-      type: object
-      required:
-      - payload
-      properties:
-        requestId:
-          type: string
-          description: Client-generated correlation id (a UUID).
-        payload:
-          $ref: '#/components/schemas/DeviceRef'
-    ScenesResponse:
-      type: object
-      properties:
-        requestId:
-          type: string
-        code:
-          type: integer
-          examples:
-          - 200
-        msg:
-          type: string
-          examples:
-          - success
-        payload:
-          type: object
-          properties:
-            sku:
-              type: string
-            device:
-              type: string
-            capabilities:
-              type: array
-              description: A single dynamic_scene (or diy_scene) capability whose parameters enumerate the available scene options for this device.
-              items:
-                $ref: '#/components/schemas/Capability'
-  responses:
-    Unauthorized:
-      description: Missing or invalid Govee-API-Key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommandResponse'
-    RateLimited:
-      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommandResponse'
   securitySchemes:
     GoveeApiKey:
       type: apiKey

@@ -37,6 +37,19 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
   schemas:
     Device:
       type: object
@@ -114,19 +127,6 @@ components:
           type: object
           description: Parameter schema for the capability (dataType plus options, range, or fields).
           additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing or invalid Govee-API-Key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommandResponse'
-    RateLimited:
-      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommandResponse'
   securitySchemes:
     GoveeApiKey:
       type: apiKey

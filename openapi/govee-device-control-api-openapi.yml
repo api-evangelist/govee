@@ -46,19 +46,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    CommandResponse:
-      type: object
-      properties:
-        requestId:
-          type: string
-        code:
-          type: integer
-          examples:
-          - 200
-        msg:
-          type: string
-          examples:
-          - success
     DeviceControlRequest:
       type: object
       required:
@@ -80,6 +67,19 @@ components:
               type: string
             capability:
               $ref: '#/components/schemas/ControlCapability'
+    CommandResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+        code:
+          type: integer
+          examples:
+          - 200
+        msg:
+          type: string
+          examples:
+          - success
     ControlCapability:
       type: object
       required:
