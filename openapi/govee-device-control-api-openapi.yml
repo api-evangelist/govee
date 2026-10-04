@@ -46,27 +46,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    DeviceControlRequest:
-      type: object
-      required:
-      - payload
-      properties:
-        requestId:
-          type: string
-          description: Client-generated correlation id (a UUID).
-        payload:
-          type: object
-          required:
-          - sku
-          - device
-          - capability
-          properties:
-            sku:
-              type: string
-            device:
-              type: string
-            capability:
-              $ref: '#/components/schemas/ControlCapability'
     CommandResponse:
       type: object
       properties:
@@ -102,15 +81,36 @@ components:
           - type: string
           - type: object
             additionalProperties: true
+    DeviceControlRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          type: object
+          required:
+          - sku
+          - device
+          - capability
+          properties:
+            sku:
+              type: string
+            device:
+              type: string
+            capability:
+              $ref: '#/components/schemas/ControlCapability'
   responses:
-    Unauthorized:
-      description: Missing or invalid Govee-API-Key.
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CommandResponse'
-    RateLimited:
-      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
       content:
         application/json:
           schema:

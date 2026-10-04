@@ -43,20 +43,21 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid Govee-API-Key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommandResponse'
-    RateLimited:
-      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CommandResponse'
   schemas:
+    DeviceRef:
+      type: object
+      required:
+      - sku
+      - device
+      properties:
+        sku:
+          type: string
+          examples:
+          - H7143
+        device:
+          type: string
+          examples:
+          - 52:8B:D4:AD:FC:45:5D:FE
     CommandResponse:
       type: object
       properties:
@@ -70,6 +71,16 @@ components:
           type: string
           examples:
           - success
+    DeviceStateRequest:
+      type: object
+      required:
+      - payload
+      properties:
+        requestId:
+          type: string
+          description: Client-generated correlation id (a UUID).
+        payload:
+          $ref: '#/components/schemas/DeviceRef'
     DeviceStateResponse:
       type: object
       properties:
@@ -102,30 +113,19 @@ components:
                   state:
                     type: object
                     additionalProperties: true
-    DeviceStateRequest:
-      type: object
-      required:
-      - payload
-      properties:
-        requestId:
-          type: string
-          description: Client-generated correlation id (a UUID).
-        payload:
-          $ref: '#/components/schemas/DeviceRef'
-    DeviceRef:
-      type: object
-      required:
-      - sku
-      - device
-      properties:
-        sku:
-          type: string
-          examples:
-          - H7143
-        device:
-          type: string
-          examples:
-          - 52:8B:D4:AD:FC:45:5D:FE
+  responses:
+    RateLimited:
+      description: Rate limit exceeded. The account-wide limit is 10,000 requests per day; a per-device per-minute limit also applies. Inspect the API-RateLimit-* response headers and back off.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
+    Unauthorized:
+      description: Missing or invalid Govee-API-Key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CommandResponse'
   securitySchemes:
     GoveeApiKey:
       type: apiKey
