@@ -50,7 +50,7 @@ tags:
 - Home Automation
 - Device Control
 created: '2026-07-03'
-modified: '2026-07-03'
+modified: '2026-10-06'
 specificationVersion: '0.23'
 apis:
 - aid: govee:govee-device-control-api
@@ -150,6 +150,8 @@ apis:
   - type: APIReference
     url: https://developer.govee.com/reference/get-light-scene
 common:
+- url: https://us.govee.com/blogs
+  type: Blog
 - type: AgenticAccess
   url: agentic-access/govee-agentic-access.yml
 - type: DomainSecurity
