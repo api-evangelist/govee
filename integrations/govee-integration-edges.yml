@@ -26,9 +26,55 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
+- partner_name: Home Assistant Community Store (HACS)
+  partner: null
+  partner_match: register-name
+  type: marketplace
+  marketplace: HACS default repository
+  evidence: https://github.com/LaggAt/hacs-govee
+  category: home-automation
+  contract_reference:
+    register: HACS default integration list (github.com/hacs/default, pinned commit) + HA analytics custom_integrations.json
+    standard: Home Assistant custom integration (HACS)
+    spec_file: null
+    role: hacs-community-integration
+    register_id: https://raw.githubusercontent.com/hacs/default/dee7a0eddd9644e8373be114cdb7818443014ba0/integration
+    pinned_commit: dee7a0eddd9644e8373be114cdb7818443014ba0
+    matched_by: register-name
+    match_note: register-name 'govee' = govee; no wikidata P856
+    integrations:
+    - domain: govee
+      name: Govee
+      repo: https://github.com/LaggAt/hacs-govee
+      builder: LaggAt
+      installs: 11430
+      installs_band: 10k+
+    - domain: govee
+      name: Govee Cloud Integration
+      repo: https://github.com/lasswellt/govee-homeassistant
+      builder: lasswellt
+      installs: 11430
+      installs_band: 10k+
+    max_installs: 11430
+    installs_source: https://analytics.home-assistant.io/custom_integrations.json
+    signal_note: installs = HA's opt-in analytics count for the integration's domain on the read date (a floor,
+      opt-in only); per-integration context, never summed or counted as edges
+    detected_by: sweep-home-assistant-hacs-custom.py
+    detected: '2026-10-22'
+    registered_name: Govee Cloud Integration
+    identity_source: register-name
+    identity_note: register gave only the name; exact normalised match to the repo's apis.yml name, one repo, Wikidata
+      P856 not contradicting (Kin 2026-10-20 decision 2)
+  detected_by: sweep-home-assistant-hacs-custom.py
+  first_seen: '2026-10-22'
+  channel: partner-built
+  relationship: connector-coverage
+  direction: partner-built
 method: searched
 checked:
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
 - https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
+- https://analytics.home-assistant.io/custom_integrations.json
+- https://raw.githubusercontent.com/hacs/default/dee7a0eddd9644e8373be114cdb7818443014ba0/integration
 source:
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
