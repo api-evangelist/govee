@@ -1,4 +1,4 @@
-# Govee (govee)
+# Govee
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,167 +64,124 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Govee builds smart lighting and smart-home devices - RGBIC LED strips, light bars, floor and table lamps, string and permanent outdoor lights, plus sensors, humidifiers, heaters, and other connected appliances. The Govee Developer API (v1, hosted at `https://openapi.api.govee.com/router/api/v1`) is a free, cloud REST API authenticated with a `Govee-API-Key` header that lets developers enumerate a user's devices and their capabilities, query live device state, and send control commands - power, brightness, RGB and color-temperature, dynamic light scenes, DIY scenes, and per-segment color and brightness. Device events (for capabilities that support them) are delivered over MQTT, and a separate local LAN API allows direct UDP control on the local network.
+Govee builds smart lighting and smart-home devices - RGBIC LED strips, light bars, floor and table lamps, string and permanent outdoor lights, plus sensors, humidifiers, heaters, and other connected appliances. The Govee Developer API (v1, hosted at https://openapi.api.govee.com/router/api/v1) is a free, cloud REST API authenticated with a Govee-API-Key header that lets developers enumerate a user's devices and their capabilities, query live device state, and send control commands - power, brightness, RGB and color-temperature, dynamic light scenes, DIY scenes, and per-segment color and brightness. Device events (for capabilities that support them) are delivered over MQTT, and a separate local LAN API allows direct UDP control on the local network.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/govee/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/govee/refs/heads/main/apis.yml)
+**Areas:** Smart Home · Smart Lighting · IoT · LED · Home Automation · Device Control
 
-## Tags
+## Govee on APIs.io
 
-- Smart Home
-- Smart Lighting
-- IoT
-- LED
-- Home Automation
-- Device Control
+Everything profiled for Govee is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/govee/](https://apis.io/providers/govee/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (4)
 
-- **Created:** 2026-07-03
-- **Modified:** 2026-07-03
+- [Govee Device Control API](https://apis.io/apis/govee/govee-device-control-api/) — Send capability commands to a device.
+- [Govee Device State API](https://apis.io/apis/govee/govee-device-state-api/) — Query the live state of a device.
+- [Govee Devices API](https://apis.io/apis/govee/govee-devices-api/) — Enumerate account devices and their capabilities.
+- [Govee Scenes API](https://apis.io/apis/govee/govee-scenes-api/) — Dynamic light scenes and DIY scenes.
 
-## APIs
+### Published properties
 
-### Govee Devices API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Enumerate all supported devices in a Govee account and discover each device's capabilities - the sku (product model), device id, user-assigned name, and the typed capability list (on_off, range/brightness, color_setting, segment_color_setting, dynamic scenes, and more) that tells you what commands a device accepts.
+#### Agentic access (1)
 
-- **Human URL:** [https://developer.govee.com/reference/get-you-devices](https://developer.govee.com/reference/get-you-devices)
-- **Base URL:** `https://openapi.api.govee.com/router/api/v1`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Govee Agentic Access](https://apis.io/agentic-access/govee/govee-agentic-access/)
 
-- Devices
-- Discovery
-- Capabilities
+#### Collections (5)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://developer.govee.com/docs/getting-started)
-- [API Reference](https://developer.govee.com/reference/get-you-devices)
-- [OpenAPI](openapi/govee-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/govee.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/govee.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Govee Developer API](https://apis.io/collections/govee/open-govee/)
+- [Govee Developer Device Control API](https://apis.io/collections/govee/open-govee-device-control-api/)
+- [Govee Developer Device Control Device State API](https://apis.io/collections/govee/open-govee-device-state-api/)
+- [Govee Developer Device Control Devices API](https://apis.io/collections/govee/open-govee-devices-api/)
+- [Govee Developer Device Control Scenes API](https://apis.io/collections/govee/open-govee-scenes-api/)
 
-### Govee Device State API
+#### Security (2)
 
-Query the current state and property values of a specific device by sku and device id - power, online status, brightness, color, color temperature, and other capability states. Offline devices return their last known (historical) state; event-only capabilities cannot be queried directly.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://developer.govee.com/reference/get-devices-status](https://developer.govee.com/reference/get-devices-status)
-- **Base URL:** `https://openapi.api.govee.com/router/api/v1`
+- [Govee Authentication](https://apis.io/security/govee/govee-authentication/)
+- [Govee Domain Security](https://apis.io/security/govee/govee-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Device State
-- Query
-- Status
+Published plans, tiers and prices.
 
-#### Properties
+- [Govee Plans Pricing](https://apis.io/plans/govee/govee-plans-pricing/)
 
-- [API Reference](https://developer.govee.com/reference/get-devices-status)
-- [OpenAPI](openapi/govee-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/govee.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/govee.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Govee Device Control API
+Published request limits.
 
-Send control commands to a device by passing a single typed capability - turn power on/off (on_off/powerSwitch), set brightness (range), set an RGB color or Kelvin color temperature (color_setting), toggle features (nightlight, oscillation), select a mode, or drive work_mode and temperature_setting capabilities on appliances.
+- [Govee Rate Limits](https://apis.io/rate-limits/govee/govee-rate-limits/)
 
-- **Human URL:** [https://developer.govee.com/reference/control-you-devices](https://developer.govee.com/reference/control-you-devices)
-- **Base URL:** `https://openapi.api.govee.com/router/api/v1`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Device Control
-- Commands
-- Power
-- Color
+- [Govee Finops](https://apis.io/finops/govee/govee-finops/)
 
-#### Properties
+## Where to find this API
 
-- [API Reference](https://developer.govee.com/reference/control-you-devices)
-- [OpenAPI](openapi/govee-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/govee.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/govee.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-### Govee Dynamic Scenes API
-
-Retrieve the list of dynamic (light) scenes a device supports - Govee's built-in lighting effects such as Sunrise, Aurora, or Rainbow - each returned as a selectable option that can then be applied through the Device Control API's dynamic_scene capability.
-
-- **Human URL:** [https://developer.govee.com/reference/get-light-scene](https://developer.govee.com/reference/get-light-scene)
-- **Base URL:** `https://openapi.api.govee.com/router/api/v1`
-
-#### Tags
-
-- Scenes
-- Light Scenes
-- Effects
-
-#### Properties
-
-- [API Reference](https://developer.govee.com/reference/get-light-scene)
-- [OpenAPI](openapi/govee-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/govee.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/govee.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Govee DIY Scenes API
-
-Retrieve the user-created DIY scenes a device supports - custom lighting effects authored by the user in the Govee Home App - each returned as a selectable option that can then be applied through the Device Control API's diy_scene capability.
-
-- **Human URL:** [https://developer.govee.com/reference/control-you-devices](https://developer.govee.com/reference/control-you-devices)
-- **Base URL:** `https://openapi.api.govee.com/router/api/v1`
-
-#### Tags
-
-- DIY Scenes
-- Custom Effects
-
-#### Properties
-
-- [API Reference](https://developer.govee.com/reference/control-you-devices)
-- [OpenAPI](openapi/govee-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/govee.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/govee.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Govee Segment Color and Brightness API
-
-Address individual segments of RGBIC lights independently via the Device Control endpoint's segment_color_setting capability - set per-segment RGB color (segmentedColorRgb) or per-segment brightness (segmentedBrightness) by passing the target segment index array plus the color or brightness value.
-
-- **Human URL:** [https://developer.govee.com/reference/control-you-devices](https://developer.govee.com/reference/control-you-devices)
-- **Base URL:** `https://openapi.api.govee.com/router/api/v1`
-
-#### Tags
-
-- Segment Control
-- RGBIC
-- Color
-- Brightness
-
-#### Properties
-
-- [API Reference](https://developer.govee.com/reference/control-you-devices)
-- [OpenAPI](openapi/govee-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/govee.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/govee.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Transports
-
-- **REST** (`https://openapi.api.govee.com/router/api/v1`) — the documented cloud developer API, `Govee-API-Key` header auth.
-- **MQTT** (`mqtts://mqtt.openapi.govee.com:8883`, topic `GA/{apiKey}`) — real-time device-event subscription. Not a WebSocket.
-- **LAN API** (local UDP) — direct on-network control; multicast discovery to `239.255.255.250:4001`, device replies on `:4002`, commands sent to `:4003`. Enabled per device in the Govee Home App.
-
-There is **no documented public WebSocket API**. See [review.yml](review.yml).
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/Govee-API)
-- [LinkedIn](https://www.linkedin.com/company/govee)
 - [Website](https://www.govee.com)
 - [Documentation](https://developer.govee.com/)
-- [Plans](plans/govee-plans-pricing.yml)
-- [Rate Limits](rate-limits/govee-rate-limits.yml)
-- [Fin Ops](finops/govee-finops.yml)
+- [Blog](https://us.govee.com/blogs)
+- [GitHub](https://github.com/Govee-API)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.3** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 51.9 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 27.4 |
+| Access clarity | 5.3 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/govee/](https://apis.io/providers/govee/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Govee: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/govee/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
